@@ -1,0 +1,140 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\laptrinhmang\\MiniDropbox\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{990666CF-45B0-FE72-AE58-E8005641D7BD}|MiniDropbox.Shared\\MiniDropbox.Shared.csproj|d:\\laptrinhmang\\minidropbox\\minidropbox.shared\\models\\fileinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{990666CF-45B0-FE72-AE58-E8005641D7BD}|MiniDropbox.Shared\\MiniDropbox.Shared.csproj|solutionrelative:minidropbox.shared\\models\\fileinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{990666CF-45B0-FE72-AE58-E8005641D7BD}|MiniDropbox.Shared\\MiniDropbox.Shared.csproj|d:\\laptrinhmang\\minidropbox\\minidropbox.shared\\protocol\\message.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{990666CF-45B0-FE72-AE58-E8005641D7BD}|MiniDropbox.Shared\\MiniDropbox.Shared.csproj|solutionrelative:minidropbox.shared\\protocol\\message.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4EC68783-0BC1-6871-9C27-835D6F615702}|MiniDropbox.Client\\MiniDropbox.Client.csproj|d:\\laptrinhmang\\minidropbox\\minidropbox.client\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4EC68783-0BC1-6871-9C27-835D6F615702}|MiniDropbox.Client\\MiniDropbox.Client.csproj|solutionrelative:minidropbox.client\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{43A2F45E-7A40-4AD9-8BCF-6E255182ADE1}|MiniDropbox.ClientGUI\\MiniDropbox.ClientGUI.csproj|D:\\laptrinhmang\\MiniDropbox\\minidropbox.clientgui\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{43A2F45E-7A40-4AD9-8BCF-6E255182ADE1}|MiniDropbox.ClientGUI\\MiniDropbox.ClientGUI.csproj|solutionrelative:minidropbox.clientgui\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4EC68783-0BC1-6871-9C27-835D6F615702}|MiniDropbox.Client\\MiniDropbox.Client.csproj|d:\\laptrinhmang\\minidropbox\\minidropbox.client\\tcpclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4EC68783-0BC1-6871-9C27-835D6F615702}|MiniDropbox.Client\\MiniDropbox.Client.csproj|solutionrelative:minidropbox.client\\tcpclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A7695A1F-615A-6828-88DE-AF0BBCE13480}|MiniDropbox.Server\\MiniDropbox.Server.csproj|d:\\laptrinhmang\\minidropbox\\minidropbox.server\\tcpserver.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A7695A1F-615A-6828-88DE-AF0BBCE13480}|MiniDropbox.Server\\MiniDropbox.Server.csproj|solutionrelative:minidropbox.server\\tcpserver.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A7695A1F-615A-6828-88DE-AF0BBCE13480}|MiniDropbox.Server\\MiniDropbox.Server.csproj|d:\\laptrinhmang\\minidropbox\\minidropbox.server\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A7695A1F-615A-6828-88DE-AF0BBCE13480}|MiniDropbox.Server\\MiniDropbox.Server.csproj|solutionrelative:minidropbox.server\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "TCPServer.cs",
+              "DocumentMoniker": "D:\\laptrinhmang\\MiniDropbox\\MiniDropbox.Server\\TCPServer.cs",
+              "RelativeDocumentMoniker": "MiniDropbox.Server\\TCPServer.cs",
+              "ToolTip": "D:\\laptrinhmang\\MiniDropbox\\MiniDropbox.Server\\TCPServer.cs",
+              "RelativeToolTip": "MiniDropbox.Server\\TCPServer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-06T13:57:07.397Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "FileInfo.cs",
+              "DocumentMoniker": "D:\\laptrinhmang\\MiniDropbox\\MiniDropbox.Shared\\Models\\FileInfo.cs",
+              "RelativeDocumentMoniker": "MiniDropbox.Shared\\Models\\FileInfo.cs",
+              "ToolTip": "D:\\laptrinhmang\\MiniDropbox\\MiniDropbox.Shared\\Models\\FileInfo.cs",
+              "RelativeToolTip": "MiniDropbox.Shared\\Models\\FileInfo.cs",
+              "ViewState": "AgIAAC8AAAAAAAAAAAAAwGwAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-06T13:56:48.988Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Message.cs",
+              "DocumentMoniker": "D:\\laptrinhmang\\MiniDropbox\\MiniDropbox.Shared\\Protocol\\Message.cs",
+              "RelativeDocumentMoniker": "MiniDropbox.Shared\\Protocol\\Message.cs",
+              "ToolTip": "D:\\laptrinhmang\\MiniDropbox\\MiniDropbox.Shared\\Protocol\\Message.cs",
+              "RelativeToolTip": "MiniDropbox.Shared\\Protocol\\Message.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAQwFEAAAA/AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-06T13:56:38.643Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\laptrinhmang\\MiniDropbox\\MiniDropbox.Client\\Program.cs",
+              "RelativeDocumentMoniker": "MiniDropbox.Client\\Program.cs",
+              "ToolTip": "D:\\laptrinhmang\\MiniDropbox\\MiniDropbox.Client\\Program.cs",
+              "RelativeToolTip": "MiniDropbox.Client\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-06T13:53:38.796Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\laptrinhmang\\MiniDropbox\\MiniDropbox.Server\\Program.cs",
+              "RelativeDocumentMoniker": "MiniDropbox.Server\\Program.cs",
+              "ToolTip": "D:\\laptrinhmang\\MiniDropbox\\MiniDropbox.Server\\Program.cs",
+              "RelativeToolTip": "MiniDropbox.Server\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-06T13:53:23.112Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "TCPClient.cs",
+              "DocumentMoniker": "D:\\laptrinhmang\\MiniDropbox\\MiniDropbox.Client\\TCPClient.cs",
+              "RelativeDocumentMoniker": "MiniDropbox.Client\\TCPClient.cs",
+              "ToolTip": "D:\\laptrinhmang\\MiniDropbox\\MiniDropbox.Client\\TCPClient.cs",
+              "RelativeToolTip": "MiniDropbox.Client\\TCPClient.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-06T13:57:22.488Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Form1.cs [Design]",
+              "DocumentMoniker": "D:\\laptrinhmang\\MiniDropbox\\MiniDropbox.ClientGUI\\Form1.cs",
+              "RelativeDocumentMoniker": "MiniDropbox.ClientGUI\\Form1.cs",
+              "ToolTip": "D:\\laptrinhmang\\MiniDropbox\\MiniDropbox.ClientGUI\\Form1.cs [Design]",
+              "RelativeToolTip": "MiniDropbox.ClientGUI\\Form1.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-06T13:54:45.439Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

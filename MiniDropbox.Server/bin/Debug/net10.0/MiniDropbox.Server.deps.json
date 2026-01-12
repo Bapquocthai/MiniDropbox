@@ -1,0 +1,39 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "MiniDropbox.Server/1.0.0": {
+        "dependencies": {
+          "MiniDropbox.Shared": "1.0.0"
+        },
+        "runtime": {
+          "MiniDropbox.Server.dll": {}
+        }
+      },
+      "MiniDropbox.Shared/1.0.0": {
+        "runtime": {
+          "MiniDropbox.Shared.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "MiniDropbox.Server/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "MiniDropbox.Shared/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
