@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="MiniDropbox.Client/MiniDropbox.Client.csproj" />
+  <Project Path="MiniDropbox.Server/MiniDropbox.Server.csproj" />
+  <Project Path="MiniDropbox.Shared/MiniDropbox.Shared.csproj" />
+</Solution>
