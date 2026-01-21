@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\MiniDropBox_bk\\MiniDropbox\\MiniDropbox.Client\\MiniDropbox.Client.csproj": {}
+    "D:\\laptrinhmang\\MiniDropbox\\MiniDropbox.Client\\MiniDropbox.Client.csproj": {}
   },
   "projects": {
-    "D:\\MiniDropBox_bk\\MiniDropbox\\MiniDropbox.Client\\MiniDropbox.Client.csproj": {
+    "D:\\laptrinhmang\\MiniDropbox\\MiniDropbox.Client\\MiniDropbox.Client.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\MiniDropBox_bk\\MiniDropbox\\MiniDropbox.Client\\MiniDropbox.Client.csproj",
+        "projectUniqueName": "D:\\laptrinhmang\\MiniDropbox\\MiniDropbox.Client\\MiniDropbox.Client.csproj",
         "projectName": "MiniDropbox.Client",
-        "projectPath": "D:\\MiniDropBox_bk\\MiniDropbox\\MiniDropbox.Client\\MiniDropbox.Client.csproj",
-        "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
-        "outputPath": "D:\\MiniDropBox_bk\\MiniDropbox\\MiniDropbox.Client\\obj\\",
+        "projectPath": "D:\\laptrinhmang\\MiniDropbox\\MiniDropbox.Client\\MiniDropbox.Client.csproj",
+        "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
+        "outputPath": "D:\\laptrinhmang\\MiniDropbox\\MiniDropbox.Client\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Dell\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -28,8 +28,8 @@
           "net10.0-windows7.0": {
             "targetAlias": "net10.0-windows",
             "projectReferences": {
-              "D:\\MiniDropBox_bk\\MiniDropbox\\MiniDropbox.Shared\\MiniDropbox.Shared.csproj": {
-                "projectPath": "D:\\MiniDropBox_bk\\MiniDropbox\\MiniDropbox.Shared\\MiniDropbox.Shared.csproj"
+              "D:\\laptrinhmang\\MiniDropbox\\MiniDropbox.Shared\\MiniDropbox.Shared.csproj": {
+                "projectPath": "D:\\laptrinhmang\\MiniDropbox\\MiniDropbox.Shared\\MiniDropbox.Shared.csproj"
               }
             }
           }
@@ -368,17 +368,17 @@
         }
       }
     },
-    "D:\\MiniDropBox_bk\\MiniDropbox\\MiniDropbox.Shared\\MiniDropbox.Shared.csproj": {
+    "D:\\laptrinhmang\\MiniDropbox\\MiniDropbox.Shared\\MiniDropbox.Shared.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\MiniDropBox_bk\\MiniDropbox\\MiniDropbox.Shared\\MiniDropbox.Shared.csproj",
+        "projectUniqueName": "D:\\laptrinhmang\\MiniDropbox\\MiniDropbox.Shared\\MiniDropbox.Shared.csproj",
         "projectName": "MiniDropbox.Shared",
-        "projectPath": "D:\\MiniDropBox_bk\\MiniDropbox\\MiniDropbox.Shared\\MiniDropbox.Shared.csproj",
-        "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
-        "outputPath": "D:\\MiniDropBox_bk\\MiniDropbox\\MiniDropbox.Shared\\obj\\",
+        "projectPath": "D:\\laptrinhmang\\MiniDropbox\\MiniDropbox.Shared\\MiniDropbox.Shared.csproj",
+        "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
+        "outputPath": "D:\\laptrinhmang\\MiniDropbox\\MiniDropbox.Shared\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Dell\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
