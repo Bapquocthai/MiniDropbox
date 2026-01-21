@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MiniDropbox.Shared")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+88a896fdd22591a3fbee0822a30b369dec589267")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0a11e1a5df41507a6ebae3620603c0af4a62a7bd")]
 [assembly: System.Reflection.AssemblyProductAttribute("MiniDropbox.Shared")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MiniDropbox.Shared")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
