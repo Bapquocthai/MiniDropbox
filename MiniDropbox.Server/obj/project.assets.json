@@ -414,19 +414,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\NCPC\\.nuget\\packages\\": {}
+    "C:\\Users\\DELL\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\BT MiniDropBox\\MiniDropbox\\MiniDropbox.Server\\MiniDropbox.Server.csproj",
+      "projectUniqueName": "D:\\MiniDropBox_bk\\MiniDropbox\\MiniDropbox.Server\\MiniDropbox.Server.csproj",
       "projectName": "MiniDropbox.Server",
-      "projectPath": "D:\\BT MiniDropBox\\MiniDropbox\\MiniDropbox.Server\\MiniDropbox.Server.csproj",
-      "packagesPath": "C:\\Users\\NCPC\\.nuget\\packages\\",
-      "outputPath": "D:\\BT MiniDropBox\\MiniDropbox\\MiniDropbox.Server\\obj\\",
+      "projectPath": "D:\\MiniDropBox_bk\\MiniDropbox\\MiniDropbox.Server\\MiniDropbox.Server.csproj",
+      "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
+      "outputPath": "D:\\MiniDropBox_bk\\MiniDropbox\\MiniDropbox.Server\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\NCPC\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -440,8 +440,8 @@
         "net10.0-windows7.0": {
           "targetAlias": "net10.0-windows",
           "projectReferences": {
-            "D:\\BT MiniDropBox\\MiniDropbox\\MiniDropbox.Shared\\MiniDropbox.Shared.csproj": {
-              "projectPath": "D:\\BT MiniDropBox\\MiniDropbox\\MiniDropbox.Shared\\MiniDropbox.Shared.csproj"
+            "D:\\MiniDropBox_bk\\MiniDropbox\\MiniDropbox.Shared\\MiniDropbox.Shared.csproj": {
+              "projectPath": "D:\\MiniDropBox_bk\\MiniDropbox\\MiniDropbox.Shared\\MiniDropbox.Shared.csproj"
             }
           }
         }
