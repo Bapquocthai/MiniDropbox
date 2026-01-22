@@ -396,19 +396,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Dell\\.nuget\\packages\\": {}
+    "C:\\Users\\DELL\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\laptrinhmang\\MiniDropbox\\MiniDropbox.Shared\\MiniDropbox.Shared.csproj",
+      "projectUniqueName": "D:\\MiniDropBox_bk\\MiniDropbox\\MiniDropbox.Shared\\MiniDropbox.Shared.csproj",
       "projectName": "MiniDropbox.Shared",
-      "projectPath": "D:\\laptrinhmang\\MiniDropbox\\MiniDropbox.Shared\\MiniDropbox.Shared.csproj",
-      "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
-      "outputPath": "D:\\laptrinhmang\\MiniDropbox\\MiniDropbox.Shared\\obj\\",
+      "projectPath": "D:\\MiniDropBox_bk\\MiniDropbox\\MiniDropbox.Shared\\MiniDropbox.Shared.csproj",
+      "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
+      "outputPath": "D:\\MiniDropBox_bk\\MiniDropbox\\MiniDropbox.Shared\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Dell\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
