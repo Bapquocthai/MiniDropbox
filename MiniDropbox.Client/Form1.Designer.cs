@@ -28,83 +28,157 @@
 
         private void InitializeComponent()
         {
-            this.txtIP = new System.Windows.Forms.TextBox();
-            this.btnConnect = new System.Windows.Forms.Button();
-            this.btnDisconnect = new System.Windows.Forms.Button();
-            this.btnSend = new System.Windows.Forms.Button();
-            this.lbLog = new System.Windows.Forms.ListBox();
-            this.lblIP = new System.Windows.Forms.Label();
-            this.grpStatus = new System.Windows.Forms.GroupBox();
-            this.lblFolder = new System.Windows.Forms.Label();
-            this.txtFolderPath = new System.Windows.Forms.TextBox();
-            this.btnBrowse = new System.Windows.Forms.Button();
-            this.lvFiles = new System.Windows.Forms.ListView();
-            this.colName = new System.Windows.Forms.ColumnHeader();
-            this.colSize = new System.Windows.Forms.ColumnHeader();
-            this.colTime = new System.Windows.Forms.ColumnHeader();
-            this.grpStatus.SuspendLayout();
-            this.SuspendLayout();
-            this.lblIP.AutoSize = true;
-            this.lblIP.Location = new System.Drawing.Point(20, 30);
-            this.lblIP.Text = "Server IP:";
-            this.txtIP.Location = new System.Drawing.Point(90, 27);
-            this.txtIP.Size = new System.Drawing.Size(120, 23);
-            this.txtIP.Text = "127.0.0.1";
-            this.btnConnect.Location = new System.Drawing.Point(220, 25);
-            this.btnConnect.Size = new System.Drawing.Size(90, 28);
-            this.btnConnect.Text = "Kết Nối";
-            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
-            this.btnDisconnect.Location = new System.Drawing.Point(320, 25);
-            this.btnDisconnect.Size = new System.Drawing.Size(90, 28);
-            this.btnDisconnect.Text = "Ngắt";
-            this.btnDisconnect.Enabled = false;
-            this.btnDisconnect.Click += new System.EventHandler(this.btnDisconnect_Click);
-            this.btnSend.Location = new System.Drawing.Point(420, 25);
-            this.btnSend.Size = new System.Drawing.Size(90, 28);
-            this.btnSend.Text = "Ping Test";
-            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
-            this.lblFolder.AutoSize = true;
-            this.lblFolder.Location = new System.Drawing.Point(20, 70);
-            this.lblFolder.Text = "Thư mục:";
-            this.txtFolderPath.Location = new System.Drawing.Point(90, 67);
-            this.txtFolderPath.Size = new System.Drawing.Size(320, 23);
-            this.txtFolderPath.ReadOnly = true; 
-            this.btnBrowse.Location = new System.Drawing.Point(420, 65);
-            this.btnBrowse.Size = new System.Drawing.Size(90, 28);
-            this.btnBrowse.Text = "Chọn...";
-            this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
-            this.lvFiles.Location = new System.Drawing.Point(20, 110);
-            this.lvFiles.Size = new System.Drawing.Size(490, 150);
-            this.lvFiles.View = System.Windows.Forms.View.Details;
-            this.lvFiles.GridLines = true;
-            this.lvFiles.FullRowSelect = true;
-            this.lvFiles.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { this.colName, this.colSize, this.colTime });
-            this.colName.Text = "Tên File"; this.colName.Width = 200;
-            this.colSize.Text = "Kích thước"; this.colSize.Width = 100;
-            this.colTime.Text = "Ngày sửa"; this.colTime.Width = 150;
-            this.lbLog.Location = new System.Drawing.Point(20, 270);
-            this.lbLog.Size = new System.Drawing.Size(490, 80);
-            this.grpStatus.Controls.Add(this.lblIP);
-            this.grpStatus.Controls.Add(this.txtIP);
-            this.grpStatus.Controls.Add(this.btnConnect);
-            this.grpStatus.Controls.Add(this.btnDisconnect);
-            this.grpStatus.Controls.Add(this.btnSend);
-            this.grpStatus.Controls.Add(this.lblFolder);
-            this.grpStatus.Controls.Add(this.txtFolderPath);
-            this.grpStatus.Controls.Add(this.btnBrowse);
-            this.grpStatus.Controls.Add(this.lvFiles);
-            this.grpStatus.Controls.Add(this.lbLog);
-            this.grpStatus.Location = new System.Drawing.Point(12, 12);
-            this.grpStatus.Size = new System.Drawing.Size(530, 370);
-            this.grpStatus.Text = "Client Control Panel";
-            this.ClientSize = new System.Drawing.Size(560, 400);
-            this.Controls.Add(this.grpStatus);
-            this.Name = "Form1";
-            this.Text = "MiniDropbox Client v2.0";
-            this.Load += new System.EventHandler(this.Form1_Load);
-            this.grpStatus.ResumeLayout(false);
-            this.grpStatus.PerformLayout();
-            this.ResumeLayout(false);
+            txtIP = new TextBox();
+            btnConnect = new Button();
+            btnDisconnect = new Button();
+            btnSend = new Button();
+            lbLog = new ListBox();
+            lblIP = new Label();
+            grpStatus = new GroupBox();
+            lblFolder = new Label();
+            txtFolderPath = new TextBox();
+            btnBrowse = new Button();
+            lvFiles = new ListView();
+            colName = new ColumnHeader();
+            colSize = new ColumnHeader();
+            colTime = new ColumnHeader();
+            grpStatus.SuspendLayout();
+            SuspendLayout();
+            // 
+            // txtIP
+            // 
+            txtIP.Location = new Point(90, 27);
+            txtIP.Name = "txtIP";
+            txtIP.Size = new Size(124, 23);
+            txtIP.TabIndex = 1;
+            txtIP.Text = "127.0.0.1";
+            // 
+            // btnConnect
+            // 
+            btnConnect.Location = new Point(404, 27);
+            btnConnect.Name = "btnConnect";
+            btnConnect.Size = new Size(133, 27);
+            btnConnect.TabIndex = 2;
+            btnConnect.Text = "Kết Nối";
+            btnConnect.Click += btnConnect_Click;
+            // 
+            // btnDisconnect
+            // 
+            btnDisconnect.Enabled = false;
+            btnDisconnect.Location = new Point(569, 27);
+            btnDisconnect.Name = "btnDisconnect";
+            btnDisconnect.Size = new Size(139, 27);
+            btnDisconnect.TabIndex = 3;
+            btnDisconnect.Text = "Ngắt";
+            btnDisconnect.Click += btnDisconnect_Click;
+            // 
+            // btnSend
+            // 
+            btnSend.Location = new Point(730, 27);
+            btnSend.Name = "btnSend";
+            btnSend.Size = new Size(126, 27);
+            btnSend.TabIndex = 4;
+            btnSend.Text = "Ping Test";
+            btnSend.Click += btnSend_Click;
+            // 
+            // lbLog
+            // 
+            lbLog.Location = new Point(20, 299);
+            lbLog.Name = "lbLog";
+            lbLog.Size = new Size(836, 94);
+            lbLog.TabIndex = 9;
+            // 
+            // lblIP
+            // 
+            lblIP.AutoSize = true;
+            lblIP.Location = new Point(20, 30);
+            lblIP.Name = "lblIP";
+            lblIP.Size = new Size(55, 15);
+            lblIP.TabIndex = 0;
+            lblIP.Text = "Server IP:";
+            // 
+            // grpStatus
+            // 
+            grpStatus.Controls.Add(lblIP);
+            grpStatus.Controls.Add(txtIP);
+            grpStatus.Controls.Add(btnConnect);
+            grpStatus.Controls.Add(btnDisconnect);
+            grpStatus.Controls.Add(btnSend);
+            grpStatus.Controls.Add(lblFolder);
+            grpStatus.Controls.Add(txtFolderPath);
+            grpStatus.Controls.Add(btnBrowse);
+            grpStatus.Controls.Add(lvFiles);
+            grpStatus.Controls.Add(lbLog);
+            grpStatus.Location = new Point(12, 12);
+            grpStatus.Name = "grpStatus";
+            grpStatus.Size = new Size(876, 403);
+            grpStatus.TabIndex = 0;
+            grpStatus.TabStop = false;
+            grpStatus.Text = "Client Control Panel";
+            // 
+            // lblFolder
+            // 
+            lblFolder.AutoSize = true;
+            lblFolder.Location = new Point(20, 70);
+            lblFolder.Name = "lblFolder";
+            lblFolder.Size = new Size(58, 15);
+            lblFolder.TabIndex = 5;
+            lblFolder.Text = "Thư mục:";
+            // 
+            // txtFolderPath
+            // 
+            txtFolderPath.Location = new Point(90, 67);
+            txtFolderPath.Name = "txtFolderPath";
+            txtFolderPath.ReadOnly = true;
+            txtFolderPath.Size = new Size(320, 23);
+            txtFolderPath.TabIndex = 6;
+            // 
+            // btnBrowse
+            // 
+            btnBrowse.Location = new Point(420, 65);
+            btnBrowse.Name = "btnBrowse";
+            btnBrowse.Size = new Size(90, 28);
+            btnBrowse.TabIndex = 7;
+            btnBrowse.Text = "Chọn...";
+            btnBrowse.Click += btnBrowse_Click;
+            // 
+            // lvFiles
+            // 
+            lvFiles.Columns.AddRange(new ColumnHeader[] { colName, colSize, colTime });
+            lvFiles.FullRowSelect = true;
+            lvFiles.GridLines = true;
+            lvFiles.Location = new Point(20, 110);
+            lvFiles.Name = "lvFiles";
+            lvFiles.Size = new Size(836, 161);
+            lvFiles.TabIndex = 8;
+            lvFiles.UseCompatibleStateImageBehavior = false;
+            lvFiles.View = View.Details;
+            // 
+            // colName
+            // 
+            colName.Text = "Tên File";
+            colName.Width = 200;
+            // 
+            // colSize
+            // 
+            colSize.Text = "Kích thước";
+            colSize.Width = 100;
+            // 
+            // colTime
+            // 
+            colTime.Text = "Ngày sửa";
+            colTime.Width = 150;
+            // 
+            // Form1
+            // 
+            ClientSize = new Size(900, 427);
+            Controls.Add(grpStatus);
+            Name = "Form1";
+            Text = "MiniDropbox Client v2.0";
+            Load += Form1_Load;
+            grpStatus.ResumeLayout(false);
+            grpStatus.PerformLayout();
+            ResumeLayout(false);
         }
 
         #endregion

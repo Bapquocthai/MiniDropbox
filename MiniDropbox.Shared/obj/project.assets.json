@@ -401,11 +401,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\BT MiniDropBox\\MiniDropbox.Shared\\MiniDropbox.Shared.csproj",
+      "projectUniqueName": "D:\\MiniDropbox\\MiniDropbox.Shared\\MiniDropbox.Shared.csproj",
       "projectName": "MiniDropbox.Shared",
-      "projectPath": "D:\\BT MiniDropBox\\MiniDropbox.Shared\\MiniDropbox.Shared.csproj",
+      "projectPath": "D:\\MiniDropbox\\MiniDropbox.Shared\\MiniDropbox.Shared.csproj",
       "packagesPath": "C:\\Users\\NCPC\\.nuget\\packages\\",
-      "outputPath": "D:\\BT MiniDropBox\\MiniDropbox.Shared\\obj\\",
+      "outputPath": "D:\\MiniDropbox\\MiniDropbox.Shared\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\NCPC\\AppData\\Roaming\\NuGet\\NuGet.Config",

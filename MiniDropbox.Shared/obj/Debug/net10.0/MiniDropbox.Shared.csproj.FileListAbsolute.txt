@@ -23,3 +23,16 @@ D:\BT MiniDropBox\MiniDropbox.Shared\obj\Debug\net10.0\MiniDropbox.Shared.dll
 D:\BT MiniDropBox\MiniDropbox.Shared\obj\Debug\net10.0\refint\MiniDropbox.Shared.dll
 D:\BT MiniDropBox\MiniDropbox.Shared\obj\Debug\net10.0\MiniDropbox.Shared.pdb
 D:\BT MiniDropBox\MiniDropbox.Shared\obj\Debug\net10.0\ref\MiniDropbox.Shared.dll
+D:\MiniDropbox\MiniDropbox.Shared\bin\Debug\net10.0\MiniDropbox.Shared.deps.json
+D:\MiniDropbox\MiniDropbox.Shared\bin\Debug\net10.0\MiniDropbox.Shared.dll
+D:\MiniDropbox\MiniDropbox.Shared\bin\Debug\net10.0\MiniDropbox.Shared.pdb
+D:\MiniDropbox\MiniDropbox.Shared\obj\Debug\net10.0\MiniDropbox.Shared.csproj.AssemblyReference.cache
+D:\MiniDropbox\MiniDropbox.Shared\obj\Debug\net10.0\MiniDropbox.Shared.GeneratedMSBuildEditorConfig.editorconfig
+D:\MiniDropbox\MiniDropbox.Shared\obj\Debug\net10.0\MiniDropbox.Shared.AssemblyInfoInputs.cache
+D:\MiniDropbox\MiniDropbox.Shared\obj\Debug\net10.0\MiniDropbox.Shared.AssemblyInfo.cs
+D:\MiniDropbox\MiniDropbox.Shared\obj\Debug\net10.0\MiniDropbox.Shared.csproj.CoreCompileInputs.cache
+D:\MiniDropbox\MiniDropbox.Shared\obj\Debug\net10.0\MiniDropbox.Shared.sourcelink.json
+D:\MiniDropbox\MiniDropbox.Shared\obj\Debug\net10.0\MiniDropbox.Shared.dll
+D:\MiniDropbox\MiniDropbox.Shared\obj\Debug\net10.0\refint\MiniDropbox.Shared.dll
+D:\MiniDropbox\MiniDropbox.Shared\obj\Debug\net10.0\MiniDropbox.Shared.pdb
+D:\MiniDropbox\MiniDropbox.Shared\obj\Debug\net10.0\ref\MiniDropbox.Shared.dll

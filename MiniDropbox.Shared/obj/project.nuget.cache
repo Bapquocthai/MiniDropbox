@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "zF0QVK7t+Vg=",
+  "dgSpecHash": "xIs/i9n6VK8=",
   "success": true,
-  "projectFilePath": "D:\\BT MiniDropBox\\MiniDropbox.Shared\\MiniDropbox.Shared.csproj",
+  "projectFilePath": "D:\\MiniDropbox\\MiniDropbox.Shared\\MiniDropbox.Shared.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\NCPC\\.nuget\\packages\\microsoft.data.sqlite\\10.0.2\\microsoft.data.sqlite.10.0.2.nupkg.sha512",
     "C:\\Users\\NCPC\\.nuget\\packages\\microsoft.data.sqlite.core\\10.0.2\\microsoft.data.sqlite.core.10.0.2.nupkg.sha512",
@@ -17,9 +17,9 @@
       "code": "NU1510",
       "level": "Warning",
       "message": "PackageReference System.Text.Json will not be pruned. Consider removing this package from your dependencies, as it is likely unnecessary.",
-      "projectPath": "D:\\BT MiniDropBox\\MiniDropbox.Shared\\MiniDropbox.Shared.csproj",
+      "projectPath": "D:\\MiniDropbox\\MiniDropbox.Shared\\MiniDropbox.Shared.csproj",
       "warningLevel": 1,
-      "filePath": "D:\\BT MiniDropBox\\MiniDropbox.Shared\\MiniDropbox.Shared.csproj",
+      "filePath": "D:\\MiniDropbox\\MiniDropbox.Shared\\MiniDropbox.Shared.csproj",
       "libraryId": "System.Text.Json",
       "targetGraphs": [
         "net10.0"
