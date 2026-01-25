@@ -419,11 +419,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\BT MiniDropBox\\MiniDropbox.Server\\MiniDropbox.Server.csproj",
+      "projectUniqueName": "D:\\MiniDropbox\\MiniDropbox.Server\\MiniDropbox.Server.csproj",
       "projectName": "MiniDropbox.Server",
-      "projectPath": "D:\\BT MiniDropBox\\MiniDropbox.Server\\MiniDropbox.Server.csproj",
+      "projectPath": "D:\\MiniDropbox\\MiniDropbox.Server\\MiniDropbox.Server.csproj",
       "packagesPath": "C:\\Users\\NCPC\\.nuget\\packages\\",
-      "outputPath": "D:\\BT MiniDropBox\\MiniDropbox.Server\\obj\\",
+      "outputPath": "D:\\MiniDropbox\\MiniDropbox.Server\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\NCPC\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -440,8 +440,8 @@
         "net10.0-windows7.0": {
           "targetAlias": "net10.0-windows",
           "projectReferences": {
-            "D:\\BT MiniDropBox\\MiniDropbox.Shared\\MiniDropbox.Shared.csproj": {
-              "projectPath": "D:\\BT MiniDropBox\\MiniDropbox.Shared\\MiniDropbox.Shared.csproj"
+            "D:\\MiniDropbox\\MiniDropbox.Shared\\MiniDropbox.Shared.csproj": {
+              "projectPath": "D:\\MiniDropbox\\MiniDropbox.Shared\\MiniDropbox.Shared.csproj"
             }
           }
         }
