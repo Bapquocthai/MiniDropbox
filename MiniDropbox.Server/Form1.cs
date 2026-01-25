@@ -28,14 +28,13 @@ namespace MiniDropbox.Server
         private void Form1_Load(object sender, EventArgs e)
         {
             lblServerPath.Text = "Kho dữ liệu: " + SERVER_PATH;
+            // Tạo thư mục nếu chưa có
             if (!Directory.Exists(SERVER_PATH)) Directory.CreateDirectory(SERVER_PATH);
             ReloadServerFiles();
             _serverThread = new Thread(StartServer);
             _serverThread.IsBackground = true;
             _serverThread.Start();
         }
-
-        // Hiện thị file
         private void ReloadServerFiles()
         {
             if (lvServerFiles.InvokeRequired)
@@ -71,9 +70,6 @@ namespace MiniDropbox.Server
             if (bytes < 1024 * 1024) return (bytes / 1024) + " KB";
             return (bytes / 1024 / 1024) + " MB";
         }
-
-
-        // Socket Server 
         private void StartServer()
         {
             try
@@ -117,7 +113,6 @@ namespace MiniDropbox.Server
             {
                 stream = new NetworkStream(client.Socket);
                 reader = new BinaryReader(stream);
-                // Đồng bộ file hiện có cho client mới kết nối
                 UpdateLog($"Bắt đầu đồng bộ dữ liệu cũ cho {client.ClientID}...");
                 SyncExistingFilesToNewClient(client);
                 while (true)
@@ -168,7 +163,6 @@ namespace MiniDropbox.Server
         {
             try
             {
-                // Lấy danh sách tất cả file trong kho Server
                 string[] allFiles = Directory.GetFiles(SERVER_PATH);
 
                 if (allFiles.Length == 0) return;
@@ -246,8 +240,6 @@ namespace MiniDropbox.Server
                 UpdateLog($"Lỗi Broadcast: {ex.Message}");
             }
         }
-
-
         private void UpdateLog(string msg)
         {
             if (lbLog.InvokeRequired) { lbLog.Invoke(new Action(() => UpdateLog(msg))); return; }
@@ -260,8 +252,6 @@ namespace MiniDropbox.Server
             if (lblStatus.InvokeRequired) { lblStatus.Invoke(new Action(() => UpdateStatus(status))); return; }
             lblStatus.Text = status;
         }
-
-
         private void HandleFileDelete(MessageHeader packet, string rootPath, ClientSocket sender)
         {
             try
@@ -279,7 +269,6 @@ namespace MiniDropbox.Server
             }
             catch (Exception ex) { UpdateLog("Lỗi xóa file: " + ex.Message); }
         }
-
         private void HandleFileRename(MessageHeader packet, string rootPath, ClientSocket sender)
         {
             try
@@ -287,7 +276,6 @@ namespace MiniDropbox.Server
                 var fileInfo = JsonSerializer.Deserialize<FileSyncEvent>(packet.PayloadJson);
                 string oldPath = Path.Combine(rootPath, fileInfo.OldFileName);
                 string newPath = Path.Combine(rootPath, fileInfo.FileName);
-
                 if (File.Exists(oldPath))
                 {
                     File.Move(oldPath, newPath);
@@ -298,7 +286,6 @@ namespace MiniDropbox.Server
             }
             catch (Exception ex) { UpdateLog("Lỗi đổi tên: " + ex.Message); }
         }
-
 
         private void BroadcastCommand(CommandType cmd, FileSyncEvent fileInfo, ClientSocket sender)
         {
