@@ -204,15 +204,18 @@ namespace MiniDropbox.Server
                 byte[] fileData = reader.ReadBytes((int)fileInfo.FileSize);
                 string savePath = Path.Combine(saveFolder, fileInfo.FileName);
                 // Xử lý xung đột
+                bool isConflict = false;
                 if (packet.Command == CommandType.FileCreate && File.Exists(savePath))
                 {
-                    // Đổi tên file mới thành "TenFile (Conflict).txt"
+                    isConflict = true;
+
                     string fileNameNoExt = Path.GetFileNameWithoutExtension(fileInfo.FileName);
                     string ext = Path.GetExtension(fileInfo.FileName);
-                    string newFileName = $"{fileNameNoExt} (Conflict){ext}";
+                    // Dùng Guid hoặc Tick để đảm bảo nếu conflict nhiều lần cũng không trùng nhau
+                    string newFileName = $"{fileNameNoExt} (Conflict) {DateTime.Now.Ticks % 1000}{ext}";
                     fileInfo.FileName = newFileName;
                     savePath = Path.Combine(saveFolder, newFileName);
-                    // Gửi cảnh báo Conflict ngược lại cho người gửi 
+                    // Gửi thông báo log cho Client
                     SendConflictNotification(sender, fileInfo.FileName);
 
                     UpdateLog($"[XUNG ĐỘT] Đã đổi tên file từ {sender.ClientID} thành: {newFileName}");

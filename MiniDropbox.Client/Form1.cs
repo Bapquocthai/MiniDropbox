@@ -418,5 +418,12 @@ namespace MiniDropbox.Client
             }
             catch (Exception ex) { Log("Lỗi xử lý conflict: " + ex.Message); }
         }
+        private void lbLog_SelectedIndexChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void lvFiles_SelectedIndexChanged(object sender, EventArgs e)
+        {
+        }
     }
 }
