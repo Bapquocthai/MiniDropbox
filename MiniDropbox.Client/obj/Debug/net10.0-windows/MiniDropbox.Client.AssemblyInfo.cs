@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MiniDropbox.Client")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cc81da3dc79c3e1860b7d5985a465e8717e720ab")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+49922a3bfd0031bc744b156e2fe39ad36c421622")]
 [assembly: System.Reflection.AssemblyProductAttribute("MiniDropbox.Client")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MiniDropbox.Client")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
