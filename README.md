@@ -30,7 +30,7 @@ Dự án được chia thành 3 module chính:
 
 ### 3. MiniDropbox.Shared
 - Thư viện chứa các class và protocol dùng chung
-- Protocol.cs: Định nghĩa các CommandType (Handshake, FileCreate, FileUpdate, FileDelete, FileRename, RequestSync, FileContent, Conflict) và các hằng số (BUFFER_SIZE, PORT)
+- Protocol.cs: Định nghĩa các CommandType (Handshake, FileCreate, FileUpdate, FileDelete, FileRename và các hằng số (BUFFER_SIZE, PORT)
 - FileSyncEvent.cs: Model chứa thông tin file (tên, đường dẫn, kích thước, thời gian sửa đổi, checksum, version)
 - MessageHeader.cs: Cấu trúc header cho message truyền tải
 - PacketUtils.cs: Các tiện ích xử lý packet
@@ -93,8 +93,7 @@ Dự án được chia thành 3 module chính:
 2. FileWatcher: Client theo dõi thay đổi trong thư mục đồng bộ
 3. Event Detection: Phát hiện các thao tác (Create/Update/Delete/Rename)
 4. Transmission: Gửi thông tin và nội dung file qua TCP
-5. Version Control: Server kiểm tra version và xử lý xung đột nếu có
-6. Sync: Server phân phối thay đổi đến các client khác
+5. Sync: Server phân phối thay đổi đến các client khác
 
 ## Các CommandType và mục đích sử dụng
 
@@ -105,39 +104,9 @@ Dự án được chia thành 3 module chính:
 - FileDelete: Xóa file khỏi hệ thống đồng bộ
 - FileRename: Đổi tên file
 
-### CommandType dự kiến triển khai trong tương lai:
-
-#### 1. `Conflict` - Xử lý xung đột
-Khi có xung đột xảy ra (nhiều client sửa cùng file):
-- Server phát hiện xung đột thông qua version number
-- Server gửi message `Conflict` đến client
-- Client hiển thị dialog cho user chọn giải quyết:
-  - Giữ bản local (của mình)
-  - Chấp nhận bản server (từ client khác)
-  - Merge thủ công (gộp cả 2 bản)
-
-#### 2. `RequestSync` - Yêu cầu đồng bộ thủ công
-Cho phép client yêu cầu server gửi lại toàn bộ file:
-- Client có thể bấm nút "Sync Now" để đồng bộ lại
-- Hữu ích khi:
-  - Client bị mất file cần tải lại
-  - Kiểm tra và tải các file còn thiếu
-  - Refresh toàn bộ dữ liệu sau khi mất kết nối lâu
-
-#### 3. `FileContent` - Truyền nội dung file riêng biệt
-Tách biệt việc truyền metadata và nội dung file:
-- Gửi metadata (thông tin file) trước
-- Sau đó gửi nội dung qua `FileContent`
-- Hỗ trợ:
-  - Truyền file lớn hiệu quả hơn
-  - Resume download khi bị ngắt kết nối
-  - Hiển thị progress bar chi tiết
 
 ## Tính năng mở rộng trong tương lai
 
-- [ ] Triển khai xử lý xung đột với `Conflict` CommandType
-- [ ] Triển khai đồng bộ thủ công với `RequestSync` CommandType
-- [ ] Triển khai truyền file lớn với `FileContent` CommandType
 - [ ] Hỗ trợ mã hóa dữ liệu truyền tải
 - [ ] Authentication và authorization
 - [ ] Giao diện web-based
