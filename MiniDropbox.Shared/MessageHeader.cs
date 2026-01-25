@@ -12,7 +12,6 @@ namespace MiniDropbox.Shared
         {
             return JsonSerializer.Serialize(this);
         }
-
         public static MessageHeader? FromJson(string json)
         {
             return JsonSerializer.Deserialize<MessageHeader>(json);

@@ -27,22 +27,15 @@ namespace MiniDropbox.Server
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            // Hiển thị đường dẫn lên giao diện
             lblServerPath.Text = "Kho dữ liệu: " + SERVER_PATH;
-
-            // Tạo thư mục nếu chưa có
             if (!Directory.Exists(SERVER_PATH)) Directory.CreateDirectory(SERVER_PATH);
-
-            // Load danh sách file hiện có ngay khi mở app
             ReloadServerFiles();
-
-            // Chạy Server
             _serverThread = new Thread(StartServer);
             _serverThread.IsBackground = true;
             _serverThread.Start();
         }
 
-        // --- hIỂN THỊ FILE SERVER ---
+        // Hiện thị file
         private void ReloadServerFiles()
         {
             if (lvServerFiles.InvokeRequired)
@@ -59,13 +52,8 @@ namespace MiniDropbox.Server
 
                 foreach (FileInfo file in files)
                 {
-                    // Tạo dòng mới
                     ListViewItem item = new ListViewItem(file.Name);
-
-                    // Cột Size (Đổi sang KB/MB cho đẹp)
                     item.SubItems.Add(FormatSize(file.Length));
-
-                    // Cột Thời gian
                     item.SubItems.Add(file.LastWriteTime.ToString("HH:mm dd/MM"));
 
                     lvServerFiles.Items.Add(item);
@@ -84,7 +72,8 @@ namespace MiniDropbox.Server
             return (bytes / 1024 / 1024) + " MB";
         }
 
-        // --- CÁC HÀM XỬ LÝ MẠNG ---
+
+        // Socket Server 
         private void StartServer()
         {
             try
@@ -118,219 +107,231 @@ namespace MiniDropbox.Server
                 UpdateLog("Lỗi Server: " + ex.Message);
             }
         }
+
         private void HandleClient(ClientSocket client)
         {
-        NetworkStream stream = null;
-        BinaryReader reader = null;
+            NetworkStream stream = null;
+            BinaryReader reader = null;
 
-        try
-        {
-            stream = new NetworkStream(client.Socket);
-            reader = new BinaryReader(stream);
-            // Gửi toàn bộ file đang có cho Client mới kết nối
-            UpdateLog($"Bắt đầu đồng bộ dữ liệu cũ cho {client.ClientID}...");
-            SyncExistingFilesToNewClient(client);
-            while (true)
+            try
             {
-                int headerLength = reader.ReadInt32();
-                byte[] headerBytes = reader.ReadBytes(headerLength);
-                string jsonHeader = Encoding.UTF8.GetString(headerBytes);
-
-                var packet = JsonSerializer.Deserialize<MessageHeader>(jsonHeader);
-                if (packet == null) continue;
-
-                switch (packet.Command)
+                stream = new NetworkStream(client.Socket);
+                reader = new BinaryReader(stream);
+                // Đồng bộ file hiện có cho client mới kết nối
+                UpdateLog($"Bắt đầu đồng bộ dữ liệu cũ cho {client.ClientID}...");
+                SyncExistingFilesToNewClient(client);
+                while (true)
                 {
-                    case CommandType.FileCreate:
-                    case CommandType.FileUpdate:
-                        HandleFileReceive(packet, reader, SERVER_PATH, client);
-                        break;
+                    int headerLength = reader.ReadInt32();
+                    byte[] headerBytes = reader.ReadBytes(headerLength);
+                    string jsonHeader = Encoding.UTF8.GetString(headerBytes);
 
-                    // --- THÊM MỚI: Xử lý Xóa và Đổi tên ---
-                    case CommandType.FileDelete:
-                        HandleFileDelete(packet, SERVER_PATH, client);
-                        break;
+                    var packet = JsonSerializer.Deserialize<MessageHeader>(jsonHeader);
+                    if (packet == null) continue;
 
-                    case CommandType.FileRename:
-                        HandleFileRename(packet, SERVER_PATH, client);
-                        break;
-                    // --------------------------------------
+                    switch (packet.Command)
+                    {
+                        case CommandType.FileCreate:
+                        case CommandType.FileUpdate:
+                            HandleFileReceive(packet, reader, SERVER_PATH, client);
+                            break;
+                        case CommandType.FileDelete:
+                            HandleFileDelete(packet, SERVER_PATH, client);
+                            break;
 
-                    case CommandType.Handshake:
-                        UpdateLog($"[{client.ClientID}] gửi PING Handshake.");
-                        break;
+                        case CommandType.FileRename:
+                            HandleFileRename(packet, SERVER_PATH, client);
+                            break;
+                        case CommandType.Handshake:
+                            UpdateLog($"[{client.ClientID}] gửi PING Handshake.");
+                            break;
+                    }
                 }
             }
-        }
-        catch (EndOfStreamException)
-        {
-            UpdateLog($"Client {client.ClientID} ngắt kết nối.");
-        }
-        catch (Exception ex)
-        {
-            UpdateLog($"Lỗi kết nối {client.ClientID}: {ex.Message}");
-        }
-        finally
-        {
-            if (client.Socket != null) client.Socket.Close();
-            _clients.Remove(client);
-            RefreshClientList();
-        }
+            catch (EndOfStreamException)
+            {
+                UpdateLog($"Client {client.ClientID} ngắt kết nối.");
+            }
+            catch (Exception ex)
+            {
+                UpdateLog($"Lỗi kết nối {client.ClientID}: {ex.Message}");
+            }
+            finally
+            {
+                if (client.Socket != null) client.Socket.Close();
+                _clients.Remove(client);
+                RefreshClientList();
+            }
         }
 
         private void SyncExistingFilesToNewClient(ClientSocket client)
         {
-        try
-        {
-            // Lấy danh sách tất cả file trong kho Server (dùng biến SERVER_PATH bạn đã khai báo)
-            string[] allFiles = Directory.GetFiles(SERVER_PATH);
-
-            if (allFiles.Length == 0) return;
-
-            foreach (string filePath in allFiles)
+            try
             {
-                // 1. Lấy thông tin file
-                FileInfo fi = new FileInfo(filePath);
-                FileSyncEvent fileInfo = new FileSyncEvent
+                // Lấy danh sách tất cả file trong kho Server
+                string[] allFiles = Directory.GetFiles(SERVER_PATH);
+
+                if (allFiles.Length == 0) return;
+
+                foreach (string filePath in allFiles)
                 {
-                    FileName = fi.Name,
-                    FileSize = fi.Length,
-                    LastModified = fi.LastWriteTime,
-                    RelativePath = fi.Name,
-                    Checksum = PacketUtils.GetMD5Checksum(filePath)
-                };
-
-                // 2. Đọc nội dung file
-                byte[] fileContent = File.ReadAllBytes(filePath);
-
-                // 3. Đóng gói (Giả dạng lệnh tạo file mới)
-                byte[] packet = PacketUtils.CreatePacket(CommandType.FileCreate, fileInfo, fileContent);
-
-                // 4. Gửi riêng cho Client này
-                if (client.Socket != null && client.Socket.Connected)
-                {
-                    client.Socket.Send(packet);
-                    // Nghỉ 50ms giữa các file để tránh nghẽn mạng
-                    Thread.Sleep(50);
+                    FileInfo fi = new FileInfo(filePath);
+                    FileSyncEvent fileInfo = new FileSyncEvent
+                    {
+                        FileName = fi.Name,
+                        FileSize = fi.Length,
+                        LastModified = fi.LastWriteTime,
+                        RelativePath = fi.Name,
+                        Checksum = PacketUtils.GetMD5Checksum(filePath)
+                    };
+                    byte[] fileContent = File.ReadAllBytes(filePath);
+                    byte[] packet = PacketUtils.CreatePacket(CommandType.FileCreate, fileInfo, fileContent);
+                    if (client.Socket != null && client.Socket.Connected)
+                    {
+                        client.Socket.Send(packet);
+                        Thread.Sleep(50);
+                    }
                 }
+                UpdateLog($"-> Đã đồng bộ {allFiles.Length} file cũ cho {client.ClientID}");
             }
-            UpdateLog($"-> Đã đồng bộ {allFiles.Length} file cũ cho {client.ClientID}");
-        }
-        catch (Exception ex)
-        {
-            UpdateLog($"Lỗi đồng bộ ban đầu: {ex.Message}");
-        }
+            catch (Exception ex)
+            {
+                UpdateLog($"Lỗi đồng bộ ban đầu: {ex.Message}");
+            }
         }
 
         private void HandleFileReceive(MessageHeader packet, BinaryReader reader, string saveFolder, ClientSocket sender)
         {
-        try
-        {
-            var fileInfo = JsonSerializer.Deserialize<FileSyncEvent>(packet.PayloadJson);
-            if (fileInfo == null) return;
-
-            // Đọc file
-            byte[] fileData = reader.ReadBytes((int)fileInfo.FileSize);
-            string savePath = Path.Combine(saveFolder, fileInfo.FileName);
-
-            // Lưu file
-            File.WriteAllBytes(savePath, fileData);
-
-            // --- THÔNG BÁO CỤ THỂ AI GỬI ---
-            UpdateLog($"[NHẬN TỪ {sender.ClientID}] Đã lưu: {fileInfo.FileName} ({FormatSize(fileInfo.FileSize)})");
-            ReloadServerFiles();
-            BroadcastFile(savePath, fileInfo, sender);
-        }
-        catch (Exception ex)
-        {
-            UpdateLog($"Lỗi lưu file: {ex.Message}");
-        }
+            try
+            {
+                var fileInfo = JsonSerializer.Deserialize<FileSyncEvent>(packet.PayloadJson);
+                if (fileInfo == null) return;
+                // Đọc file
+                byte[] fileData = reader.ReadBytes((int)fileInfo.FileSize);
+                string savePath = Path.Combine(saveFolder, fileInfo.FileName);
+                // Lưu file
+                File.WriteAllBytes(savePath, fileData);
+                UpdateLog($"[NHẬN TỪ {sender.ClientID}] Đã lưu: {fileInfo.FileName} ({FormatSize(fileInfo.FileSize)})");
+                ReloadServerFiles();
+                BroadcastFile(savePath, fileInfo, sender);
+            }
+            catch (Exception ex)
+            {
+                UpdateLog($"Lỗi lưu file: {ex.Message}");
+            }
         }
 
         private void BroadcastFile(string filePath, FileSyncEvent fileInfo, ClientSocket sender)
         {
-        try
-        {
-            byte[] fileContent = File.ReadAllBytes(filePath);
-            byte[] packet = PacketUtils.CreatePacket(CommandType.FileCreate, fileInfo, fileContent);
-
-            foreach (var client in _clients)
+            try
             {
-                if (client != sender && client.Socket != null && client.Socket.Connected)
+                byte[] fileContent = File.ReadAllBytes(filePath);
+                byte[] packet = PacketUtils.CreatePacket(CommandType.FileCreate, fileInfo, fileContent);
+
+                foreach (var client in _clients)
                 {
-                    try
+                    if (client != sender && client.Socket != null && client.Socket.Connected)
                     {
-                        client.Socket.Send(packet);
-                        UpdateLog($"-> Đã chuyển tiếp tới {client.ClientID}");
+                        try
+                        {
+                            client.Socket.Send(packet);
+                            UpdateLog($"-> Đã chuyển tiếp tới {client.ClientID}");
+                        }
+                        catch { }
                     }
-                    catch { }
                 }
             }
-        }
-        catch (Exception ex)
-        {
-            UpdateLog($"Lỗi Broadcast: {ex.Message}");
-        }
+            catch (Exception ex)
+            {
+                UpdateLog($"Lỗi Broadcast: {ex.Message}");
+            }
         }
 
-        // --- CÁC HÀM UI ---
+
         private void UpdateLog(string msg)
         {
-        if (lbLog.InvokeRequired) { lbLog.Invoke(new Action(() => UpdateLog(msg))); return; }
-        lbLog.Items.Add($"{DateTime.Now:HH:mm:ss}: {msg}");
-        lbLog.TopIndex = lbLog.Items.Count - 1;
+            if (lbLog.InvokeRequired) { lbLog.Invoke(new Action(() => UpdateLog(msg))); return; }
+            lbLog.Items.Add($"{DateTime.Now:HH:mm:ss}: {msg}");
+            lbLog.TopIndex = lbLog.Items.Count - 1;
         }
 
         private void UpdateStatus(string status)
         {
-        if (lblStatus.InvokeRequired) { lblStatus.Invoke(new Action(() => UpdateStatus(status))); return; }
-        lblStatus.Text = status;
+            if (lblStatus.InvokeRequired) { lblStatus.Invoke(new Action(() => UpdateStatus(status))); return; }
+            lblStatus.Text = status;
         }
 
-        // --- XỬ LÝ LỆNH XÓA ---
+
         private void HandleFileDelete(MessageHeader packet, string rootPath, ClientSocket sender)
         {
-        try
-        {
-            var fileInfo = JsonSerializer.Deserialize<FileSyncEvent>(packet.PayloadJson);
-            string path = Path.Combine(rootPath, fileInfo.FileName);
-
-            if (File.Exists(path))
+            try
             {
-                File.Delete(path);
-                UpdateLog($"[XÓA] {sender.ClientID} đã xóa {fileInfo.FileName}");
+                var fileInfo = JsonSerializer.Deserialize<FileSyncEvent>(packet.PayloadJson);
+                string path = Path.Combine(rootPath, fileInfo.FileName);
 
-                // Cập nhật lại giao diện Server
-                ReloadServerFiles();
-
-                // Gửi lệnh xóa cho các máy khác
-                BroadcastCommand(CommandType.FileDelete, fileInfo, sender);
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                    UpdateLog($"[XÓA] {sender.ClientID} đã xóa {fileInfo.FileName}");
+                    ReloadServerFiles();
+                    BroadcastCommand(CommandType.FileDelete, fileInfo, sender);
+                }
             }
-        }
-        catch (Exception ex) { UpdateLog("Lỗi xóa file: " + ex.Message); }
+            catch (Exception ex) { UpdateLog("Lỗi xóa file: " + ex.Message); }
         }
 
-        // --- XỬ LÝ LỆNH ĐỔI TÊN ---
         private void HandleFileRename(MessageHeader packet, string rootPath, ClientSocket sender)
         {
-        try
-        {
-            var fileInfo = JsonSerializer.Deserialize<FileSyncEvent>(packet.PayloadJson);
-            // Dùng OldFileName để tìm file gốc
-            string oldPath = Path.Combine(rootPath, fileInfo.OldFileName);
-            string newPath = Path.Combine(rootPath, fileInfo.FileName);
-
-            if (File.Exists(oldPath))
+            try
             {
-                File.Move(oldPath, newPath);
-                UpdateLog($"[ĐỔI TÊN] {sender.ClientID}: {fileInfo.OldFileName} -> {fileInfo.FileName}");
+                var fileInfo = JsonSerializer.Deserialize<FileSyncEvent>(packet.PayloadJson);
+                string oldPath = Path.Combine(rootPath, fileInfo.OldFileName);
+                string newPath = Path.Combine(rootPath, fileInfo.FileName);
 
-                ReloadServerFiles();
-
-                // Gửi lệnh đổi tên cho các máy khác
-                BroadcastCommand(CommandType.FileRename, fileInfo, sender);
+                if (File.Exists(oldPath))
+                {
+                    File.Move(oldPath, newPath);
+                    UpdateLog($"[ĐỔI TÊN] {sender.ClientID}: {fileInfo.OldFileName} -> {fileInfo.FileName}");
+                    ReloadServerFiles();
+                    BroadcastCommand(CommandType.FileRename, fileInfo, sender);
+                }
             }
+            catch (Exception ex) { UpdateLog("Lỗi đổi tên: " + ex.Message); }
         }
-        catch (Exception ex) { UpdateLog("Lỗi đổi tên: " + ex.Message); }
+
+
+        private void BroadcastCommand(CommandType cmd, FileSyncEvent fileInfo, ClientSocket sender)
+        {
+            try
+            {
+                byte[] packet = PacketUtils.CreatePacket(cmd, fileInfo, new byte[0]);
+
+                foreach (var client in _clients)
+                {
+                    if (client != sender && client.Socket != null && client.Socket.Connected)
+                    {
+                        try
+                        {
+                            client.Socket.Send(packet);
+                            UpdateLog($"-> Đã chuyển lệnh {cmd} tới {client.ClientID}");
+                        }
+                        catch { }
+                    }
+                }
+            }
+            catch (Exception ex) { UpdateLog("Lỗi Broadcast lệnh: " + ex.Message); }
         }
+
+        private void RefreshClientList()
+        {
+            if (dgvClients.InvokeRequired) { dgvClients.Invoke(new Action(RefreshClientList)); return; }
+            dgvClients.DataSource = null;
+            var displayList = new List<object>();
+            foreach (var client in _clients)
+            {
+                displayList.Add(new { IP = client.ClientID, TrangThai = "Online" });
+            }
+            dgvClients.DataSource = displayList;
+        }
+    }
 }

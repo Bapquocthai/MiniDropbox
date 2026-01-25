@@ -5,14 +5,14 @@ namespace MiniDropbox.Shared
 
     public enum CommandType
     {
-        Handshake,      // Bắt tay
-        FileCreate,     // Tạo mới
+        Handshake,     
+        FileCreate,     // Tạo file
         FileUpdate,     // Cập nhật nội dung
         FileDelete,     // Xóa file
         FileRename,     // Đổi tên file
-        RequestSync,    // Yêu cầu đồng bộ
-        FileContent,    // (Dự phòng)
-        Conflict        // (Dự phòng)
+        RequestSync,    // Đồng bộ file
+        FileContent,    
+        Conflict       
     }
 
     public class Protocol

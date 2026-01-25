@@ -9,11 +9,9 @@ namespace MiniDropbox.Shared
 {
     public static class PacketUtils
     {
-        // Hàm này dùng để đóng gói File thành mảng byte gửi đi
-        // Cấu trúc gói tin: [4 byte độ dài Header] + [Header JSON] + [File Content]
+        // Đóng gói file thành packet để gửi qua mạng
         public static byte[] CreatePacket(CommandType cmd, FileSyncEvent fileInfo, byte[] fileData)
         {
-            // 1. Tạo Header chứa thông tin metadata
             var header = new MessageHeader
             {
                 Command = cmd,
@@ -22,23 +20,19 @@ namespace MiniDropbox.Shared
 
             string jsonHeader = JsonSerializer.Serialize(header);
             byte[] headerBytes = Encoding.UTF8.GetBytes(jsonHeader);
-            byte[] lengthBytes = BitConverter.GetBytes(headerBytes.Length); // 4 byte độ dài
+            byte[] lengthBytes = BitConverter.GetBytes(headerBytes.Length);
 
-            // 2. Ghép tất cả lại: [Length] + [Header] + [Data]
             List<byte> packet = new List<byte>();
-
-            packet.AddRange(lengthBytes);       // 4 byte đầu: Báo độ dài header
-            packet.AddRange(headerBytes);       // Header JSON
-
+            packet.AddRange(lengthBytes);       
+            packet.AddRange(headerBytes);     
             if (fileData != null)
             {
-                packet.AddRange(fileData);      // Nội dung file (nếu có)
+                packet.AddRange(fileData);
             }
-
             return packet.ToArray();
         }
 
-        // Hàm hỗ trợ tạo MD5 Checksum (để kiểm tra file có thay đổi nội dung không)
+        // MD5 checksum của file
         public static string GetMD5Checksum(string filename)
         {
             using (var md5 = System.Security.Cryptography.MD5.Create())
