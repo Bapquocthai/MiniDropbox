@@ -118,3 +118,4 @@ Dự án được chia thành 3 module chính:
 Ngô Quốc Thái - Nguyễn Đức Thành Long
 Dự án được phát triển như một đề tài học tập về lập trình mạng và đồng bộ file.
 Lưu ý: Đây là phiên bản học tập và demo. Không khuyến khích sử dụng cho production mà chưa có các biện pháp bảo mật đầy đủ.
+Github: https://github.com/Bapquocthai/MiniDropbox.git
