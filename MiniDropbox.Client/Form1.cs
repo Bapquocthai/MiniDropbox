@@ -290,9 +290,7 @@ namespace MiniDropbox.Client
                         case CommandType.FileRename:
                             HandleRenameCommand(packet);
                             break;
-                        case CommandType.Conflict:
-                            HandleConflictCommand(packet);
-                            break;
+                       
                     }
                 }
             }
@@ -408,22 +406,6 @@ namespace MiniDropbox.Client
             lbLog.Items.Add($"{DateTime.Now:HH:mm:ss}: {msg}");
             lbLog.TopIndex = lbLog.Items.Count - 1;
         }
-        // Xử lý Conflict
-        private void HandleConflictCommand(MessageHeader packet)
-        {
-            try
-            {
-                var fileInfo = JsonSerializer.Deserialize<FileSyncEvent>(packet.PayloadJson);
-                Log($"[CẢNH BÁO] File bạn gửi bị trùng tên! Server đã đổi thành: {fileInfo.FileName}");
-            }
-            catch (Exception ex) { Log("Lỗi xử lý conflict: " + ex.Message); }
-        }
-        private void lbLog_SelectedIndexChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void lvFiles_SelectedIndexChanged(object sender, EventArgs e)
-        {
-        }
+       
     }
 }
