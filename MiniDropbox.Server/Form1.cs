@@ -118,4 +118,219 @@ namespace MiniDropbox.Server
                 UpdateLog("Lỗi Server: " + ex.Message);
             }
         }
-    }
+        private void HandleClient(ClientSocket client)
+        {
+        NetworkStream stream = null;
+        BinaryReader reader = null;
+
+        try
+        {
+            stream = new NetworkStream(client.Socket);
+            reader = new BinaryReader(stream);
+            // Gửi toàn bộ file đang có cho Client mới kết nối
+            UpdateLog($"Bắt đầu đồng bộ dữ liệu cũ cho {client.ClientID}...");
+            SyncExistingFilesToNewClient(client);
+            while (true)
+            {
+                int headerLength = reader.ReadInt32();
+                byte[] headerBytes = reader.ReadBytes(headerLength);
+                string jsonHeader = Encoding.UTF8.GetString(headerBytes);
+
+                var packet = JsonSerializer.Deserialize<MessageHeader>(jsonHeader);
+                if (packet == null) continue;
+
+                switch (packet.Command)
+                {
+                    case CommandType.FileCreate:
+                    case CommandType.FileUpdate:
+                        HandleFileReceive(packet, reader, SERVER_PATH, client);
+                        break;
+
+                    // --- THÊM MỚI: Xử lý Xóa và Đổi tên ---
+                    case CommandType.FileDelete:
+                        HandleFileDelete(packet, SERVER_PATH, client);
+                        break;
+
+                    case CommandType.FileRename:
+                        HandleFileRename(packet, SERVER_PATH, client);
+                        break;
+                    // --------------------------------------
+
+                    case CommandType.Handshake:
+                        UpdateLog($"[{client.ClientID}] gửi PING Handshake.");
+                        break;
+                }
+            }
+        }
+        catch (EndOfStreamException)
+        {
+            UpdateLog($"Client {client.ClientID} ngắt kết nối.");
+        }
+        catch (Exception ex)
+        {
+            UpdateLog($"Lỗi kết nối {client.ClientID}: {ex.Message}");
+        }
+        finally
+        {
+            if (client.Socket != null) client.Socket.Close();
+            _clients.Remove(client);
+            RefreshClientList();
+        }
+        }
+
+        private void SyncExistingFilesToNewClient(ClientSocket client)
+        {
+        try
+        {
+            // Lấy danh sách tất cả file trong kho Server (dùng biến SERVER_PATH bạn đã khai báo)
+            string[] allFiles = Directory.GetFiles(SERVER_PATH);
+
+            if (allFiles.Length == 0) return;
+
+            foreach (string filePath in allFiles)
+            {
+                // 1. Lấy thông tin file
+                FileInfo fi = new FileInfo(filePath);
+                FileSyncEvent fileInfo = new FileSyncEvent
+                {
+                    FileName = fi.Name,
+                    FileSize = fi.Length,
+                    LastModified = fi.LastWriteTime,
+                    RelativePath = fi.Name,
+                    Checksum = PacketUtils.GetMD5Checksum(filePath)
+                };
+
+                // 2. Đọc nội dung file
+                byte[] fileContent = File.ReadAllBytes(filePath);
+
+                // 3. Đóng gói (Giả dạng lệnh tạo file mới)
+                byte[] packet = PacketUtils.CreatePacket(CommandType.FileCreate, fileInfo, fileContent);
+
+                // 4. Gửi riêng cho Client này
+                if (client.Socket != null && client.Socket.Connected)
+                {
+                    client.Socket.Send(packet);
+                    // Nghỉ 50ms giữa các file để tránh nghẽn mạng
+                    Thread.Sleep(50);
+                }
+            }
+            UpdateLog($"-> Đã đồng bộ {allFiles.Length} file cũ cho {client.ClientID}");
+        }
+        catch (Exception ex)
+        {
+            UpdateLog($"Lỗi đồng bộ ban đầu: {ex.Message}");
+        }
+        }
+
+        private void HandleFileReceive(MessageHeader packet, BinaryReader reader, string saveFolder, ClientSocket sender)
+        {
+        try
+        {
+            var fileInfo = JsonSerializer.Deserialize<FileSyncEvent>(packet.PayloadJson);
+            if (fileInfo == null) return;
+
+            // Đọc file
+            byte[] fileData = reader.ReadBytes((int)fileInfo.FileSize);
+            string savePath = Path.Combine(saveFolder, fileInfo.FileName);
+
+            // Lưu file
+            File.WriteAllBytes(savePath, fileData);
+
+            // --- THÔNG BÁO CỤ THỂ AI GỬI ---
+            UpdateLog($"[NHẬN TỪ {sender.ClientID}] Đã lưu: {fileInfo.FileName} ({FormatSize(fileInfo.FileSize)})");
+            ReloadServerFiles();
+            BroadcastFile(savePath, fileInfo, sender);
+        }
+        catch (Exception ex)
+        {
+            UpdateLog($"Lỗi lưu file: {ex.Message}");
+        }
+        }
+
+        private void BroadcastFile(string filePath, FileSyncEvent fileInfo, ClientSocket sender)
+        {
+        try
+        {
+            byte[] fileContent = File.ReadAllBytes(filePath);
+            byte[] packet = PacketUtils.CreatePacket(CommandType.FileCreate, fileInfo, fileContent);
+
+            foreach (var client in _clients)
+            {
+                if (client != sender && client.Socket != null && client.Socket.Connected)
+                {
+                    try
+                    {
+                        client.Socket.Send(packet);
+                        UpdateLog($"-> Đã chuyển tiếp tới {client.ClientID}");
+                    }
+                    catch { }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            UpdateLog($"Lỗi Broadcast: {ex.Message}");
+        }
+        }
+
+        // --- CÁC HÀM UI ---
+        private void UpdateLog(string msg)
+        {
+        if (lbLog.InvokeRequired) { lbLog.Invoke(new Action(() => UpdateLog(msg))); return; }
+        lbLog.Items.Add($"{DateTime.Now:HH:mm:ss}: {msg}");
+        lbLog.TopIndex = lbLog.Items.Count - 1;
+        }
+
+        private void UpdateStatus(string status)
+        {
+        if (lblStatus.InvokeRequired) { lblStatus.Invoke(new Action(() => UpdateStatus(status))); return; }
+        lblStatus.Text = status;
+        }
+
+        // --- XỬ LÝ LỆNH XÓA ---
+        private void HandleFileDelete(MessageHeader packet, string rootPath, ClientSocket sender)
+        {
+        try
+        {
+            var fileInfo = JsonSerializer.Deserialize<FileSyncEvent>(packet.PayloadJson);
+            string path = Path.Combine(rootPath, fileInfo.FileName);
+
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+                UpdateLog($"[XÓA] {sender.ClientID} đã xóa {fileInfo.FileName}");
+
+                // Cập nhật lại giao diện Server
+                ReloadServerFiles();
+
+                // Gửi lệnh xóa cho các máy khác
+                BroadcastCommand(CommandType.FileDelete, fileInfo, sender);
+            }
+        }
+        catch (Exception ex) { UpdateLog("Lỗi xóa file: " + ex.Message); }
+        }
+
+        // --- XỬ LÝ LỆNH ĐỔI TÊN ---
+        private void HandleFileRename(MessageHeader packet, string rootPath, ClientSocket sender)
+        {
+        try
+        {
+            var fileInfo = JsonSerializer.Deserialize<FileSyncEvent>(packet.PayloadJson);
+            // Dùng OldFileName để tìm file gốc
+            string oldPath = Path.Combine(rootPath, fileInfo.OldFileName);
+            string newPath = Path.Combine(rootPath, fileInfo.FileName);
+
+            if (File.Exists(oldPath))
+            {
+                File.Move(oldPath, newPath);
+                UpdateLog($"[ĐỔI TÊN] {sender.ClientID}: {fileInfo.OldFileName} -> {fileInfo.FileName}");
+
+                ReloadServerFiles();
+
+                // Gửi lệnh đổi tên cho các máy khác
+                BroadcastCommand(CommandType.FileRename, fileInfo, sender);
+            }
+        }
+        catch (Exception ex) { UpdateLog("Lỗi đổi tên: " + ex.Message); }
+        }
+}
