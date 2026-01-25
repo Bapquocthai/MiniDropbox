@@ -15,8 +15,6 @@ namespace MiniDropbox.Client
         Socket? clientSocket;
         Thread? clientThread;
         FileSystemWatcher? watcher;
-
-        // Mặc định thư mục
         string currentFolder = @"D:\DropboxTest";
         bool isUpdating = false;
 
@@ -29,15 +27,11 @@ namespace MiniDropbox.Client
         private void Form1_Load(object sender, EventArgs e)
         {
             if (!Directory.Exists(currentFolder)) Directory.CreateDirectory(currentFolder);
-
-            // Hiển thị đường dẫn lên giao diện
             txtFolderPath.Text = currentFolder;
-
-            // Load danh sách file lần đầu
             ReloadFileList();
         }
 
-        // --- 1. CHỨC NĂNG CHỌN THƯ MỤC (MỚI) ---
+        // Chọn thu mục làm việc
         private void btnBrowse_Click(object sender, EventArgs e)
         {
             using (var fbd = new FolderBrowserDialog())
@@ -46,28 +40,22 @@ namespace MiniDropbox.Client
 
                 if (fbd.ShowDialog() == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
                 {
-                    // Cập nhật đường dẫn mới
                     currentFolder = fbd.SelectedPath;
                     txtFolderPath.Text = currentFolder;
 
                     Log("Đã đổi thư mục làm việc: " + currentFolder);
-
-                    // Reset Watcher theo đường dẫn mới
                     if (clientSocket != null && clientSocket.Connected)
                     {
                         StartWatching();
                     }
-
-                    // Load lại danh sách file
                     ReloadFileList();
                 }
             }
         }
 
-        // --- 2. HIỂN THỊ DANH SÁCH FILE (MỚI) ---
+
         void ReloadFileList()
         {
-            // Đảm bảo chạy trên luồng giao diện
             if (lvFiles.InvokeRequired)
             {
                 lvFiles.Invoke(new Action(ReloadFileList));
@@ -78,17 +66,14 @@ namespace MiniDropbox.Client
             {
                 lvFiles.Items.Clear();
                 DirectoryInfo d = new DirectoryInfo(currentFolder);
-                FileInfo[] files = d.GetFiles(); // Lấy tất cả file
+                FileInfo[] files = d.GetFiles(); 
 
                 foreach (FileInfo file in files)
                 {
-                    // Bỏ qua file tạm
                     if (file.Name.StartsWith("~$")) continue;
-
-                    // Tạo dòng mới cho ListView
                     ListViewItem item = new ListViewItem(file.Name);
-                    item.SubItems.Add(FormatSize(file.Length)); // Cột kích thước
-                    item.SubItems.Add(file.LastWriteTime.ToString("dd/MM HH:mm")); // Cột ngày giờ
+                    item.SubItems.Add(FormatSize(file.Length)); 
+                    item.SubItems.Add(file.LastWriteTime.ToString("dd/MM HH:mm")); 
 
                     lvFiles.Items.Add(item);
                 }
@@ -99,7 +84,6 @@ namespace MiniDropbox.Client
             }
         }
 
-        // Hàm tiện ích đổi Byte sang KB/MB cho đẹp
         string FormatSize(long bytes)
         {
             if (bytes < 1024) return bytes + " B";
@@ -107,7 +91,7 @@ namespace MiniDropbox.Client
             return (bytes / 1024 / 1024) + " MB";
         }
 
-        // --- 3. KẾT NỐI SERVER ---
+        // Kết nối tới Server
         private void btnConnect_Click(object sender, EventArgs e)
         {
             try
@@ -118,7 +102,7 @@ namespace MiniDropbox.Client
 
                 Log("Đã kết nối Server!");
                 ToggleButtons(true);
-                StartWatching(); // Bắt đầu theo dõi thư mục hiện tại
+                StartWatching();
 
                 clientThread = new Thread(ReceiveData);
                 clientThread.IsBackground = true;
@@ -142,14 +126,15 @@ namespace MiniDropbox.Client
             if (clientSocket != null) { clientSocket.Close(); clientSocket = null; }
             if (watcher != null) { watcher.Dispose(); watcher = null; }
             ToggleButtons(false);
-    
         }
+
+        // Dùng FileSystemWatcher để theo dõi thay đổi trong thư mục
         void StartWatching()
         {
             if (watcher != null) watcher.Dispose();
 
             watcher = new FileSystemWatcher();
-            watcher.Path = currentFolder; // Theo dõi folder đang chọn
+            watcher.Path = currentFolder; 
             watcher.NotifyFilter = NotifyFilters.FileName | NotifyFilters.Size | NotifyFilters.LastWrite;
             watcher.Filter = "*.*";
 
@@ -165,21 +150,16 @@ namespace MiniDropbox.Client
         private void OnFileChanged(object sender, FileSystemEventArgs e)
         {
             if (isUpdating) return;
-            // Cập nhật lại danh sách hiển thị
             ReloadFileList();
 
             if (e.Name.StartsWith("~$")) return;
             Log($"[File {e.ChangeType}]: {e.Name}");
-
-            // Xác định lệnh
             CommandType cmd = CommandType.FileCreate;
             if (e.ChangeType == WatcherChangeTypes.Changed) cmd = CommandType.FileUpdate;
-
-            // Nếu là xóa
             if (e.ChangeType == WatcherChangeTypes.Deleted)
             {
                 Log($"[Đã xóa]: {e.Name}");
-                // Gửi lệnh xóa (không cần gửi nội dung file)
+
                 SendSyncCommand(e.Name, null, CommandType.FileDelete);
                 return;
             }
@@ -194,15 +174,13 @@ namespace MiniDropbox.Client
 
         private void OnFileRenamed(object sender, RenamedEventArgs e)
         {
-            // Nếu đang update từ server thì không gửi ngược lại
             if (isUpdating) return;
-            ReloadFileList(); // Cập nhật danh sách
+            ReloadFileList(); 
             Log($"[Rename]: {e.OldName} -> {e.Name}");
-            // Gửi lệnh đổi tên kèm theo tên cũ (OldName)
             SendSyncCommand(e.Name, e.OldName, CommandType.FileRename);
         }
 
-        // Hàm gửi lệnh mà không cần nội dung file (Dùng cho Xóa, Đổi tên)
+
         private void SendSyncCommand(string fileName, string oldFileName, CommandType cmd)
         {
             try
@@ -212,11 +190,9 @@ namespace MiniDropbox.Client
                     FileSyncEvent fileInfo = new FileSyncEvent
                     {
                         FileName = fileName,
-                        OldFileName = oldFileName, // Quan trọng cho lệnh Rename
+                        OldFileName = oldFileName, 
                         FileSize = 0
                     };
-
-                    // Tạo gói tin với nội dung rỗng (new byte[0])
                     byte[] packet = PacketUtils.CreatePacket(cmd, fileInfo, new byte[0]);
                     clientSocket.Send(packet);
                 }
@@ -259,20 +235,16 @@ namespace MiniDropbox.Client
             {
                 try
                 {
-                    // 1. Tạo một sự kiện giả (Dummy Event)
                     FileSyncEvent testEvent = new FileSyncEvent
                     {
-                        FileName = "TestPing.txt", // Tên giả
-                        FileSize = 0,              // Không có nội dung
+                        FileName = "TestPing.txt", 
+                        FileSize = 0,              
                         RelativePath = "Test",
                         Checksum = "TEST"
                     };
 
-                    // 2. Đóng gói theo chuẩn Protocol (Dùng CommandType.Handshake để test)
-                    // Lưu ý: new byte[0] nghĩa là không có nội dung file đi kèm
+                    // Đóng gói và gửi theo protocol
                     byte[] packet = PacketUtils.CreatePacket(CommandType.Handshake, testEvent, new byte[0]);
-
-                    // 3. Gửi đi
                     clientSocket.Send(packet);
                     Log("Me: Test Ping");
                 }
@@ -287,9 +259,8 @@ namespace MiniDropbox.Client
             }
         }
 
-        // --- HELPER UI ---
         void ReceiveData()
-        { /* Logic nhận giữ nguyên hoặc mở rộng sau */
+        {
             NetworkStream stream = null;
             BinaryReader reader = null;
 
@@ -300,25 +271,18 @@ namespace MiniDropbox.Client
 
                 while (true)
                 {
-                    // 1. Đọc độ dài Header (4 byte)
                     int headerLength = reader.ReadInt32();
-
-                    // 2. Đọc Header JSON
                     byte[] headerBytes = reader.ReadBytes(headerLength);
                     string jsonHeader = Encoding.UTF8.GetString(headerBytes);
                     var packet = JsonSerializer.Deserialize<MessageHeader>(jsonHeader);
 
                     if (packet == null) continue;
-
-                    // 3. Xử lý lệnh
                     switch (packet.Command)
                     {
                         case CommandType.FileCreate:
                         case CommandType.FileUpdate:
                             SaveReceivedFile(packet, reader);
                             break;
-
-                        // --- THÊM CASE MỚI ---
                         case CommandType.FileDelete:
                             HandleDeleteCommand(packet);
                             break;
@@ -346,7 +310,6 @@ namespace MiniDropbox.Client
 
                 if (File.Exists(path))
                 {
-                    // Tắt Watcher để tránh vòng lặp vô tận
                     bool wasWatching = (watcher != null && watcher.EnableRaisingEvents);
                     if (watcher != null) watcher.EnableRaisingEvents = false;
 
@@ -357,7 +320,6 @@ namespace MiniDropbox.Client
                     }
                     finally
                     {
-                        // Bật lại Watcher
                         if (watcher != null && wasWatching) watcher.EnableRaisingEvents = true;
                     }
                     ReloadFileList();
@@ -377,7 +339,6 @@ namespace MiniDropbox.Client
 
                 if (File.Exists(oldPath))
                 {
-                    // Tắt Watcher
                     bool wasWatching = (watcher != null && watcher.EnableRaisingEvents);
                     if (watcher != null) watcher.EnableRaisingEvents = false;
 
@@ -388,7 +349,6 @@ namespace MiniDropbox.Client
                     }
                     finally
                     {
-                        // Bật lại Watcher
                         if (watcher != null && wasWatching) watcher.EnableRaisingEvents = true;
                     }
                     ReloadFileList();
@@ -403,41 +363,25 @@ namespace MiniDropbox.Client
             {
                 var fileInfo = JsonSerializer.Deserialize<FileSyncEvent>(packet.PayloadJson);
                 if (fileInfo == null) return;
-
-                // 1. Đọc nội dung file từ mạng vào bộ nhớ đệm (RAM) trước
-                // Đọc xong mới bắt đầu ghi đĩa để giảm thời gian chiếm dụng file
                 byte[] fileContent = reader.ReadBytes((int)fileInfo.FileSize);
-
                 string savePath = Path.Combine(currentFolder, fileInfo.FileName);
-
-                // --- KHẮC PHỤC TRIỆT ĐỂ VÒNG LẶP TẠI ĐÂY ---
-
-                // Bước A: Tạm thời "bịt mắt" Watcher lại
-                // Để nó không nhìn thấy việc chúng ta sắp ghi file
                 bool wasWatching = (watcher != null && watcher.EnableRaisingEvents);
                 if (watcher != null) watcher.EnableRaisingEvents = false;
 
                 try
                 {
-                    // Bước B: Ghi đè file xuống ổ cứng an toàn
                     File.WriteAllBytes(savePath, fileContent);
-
-                    // Cập nhật lại thời gian sửa đổi cho khớp với Server
                     File.SetLastWriteTime(savePath, fileInfo.LastModified);
 
                     Log($"<-- Đã nhận file mới: {fileInfo.FileName}");
                 }
                 finally
                 {
-                    // Bước C: Dù ghi thành công hay lỗi, BẮT BUỘC phải mở mắt lại
-                    // Để tiếp tục theo dõi các file khác
                     if (watcher != null && wasWatching)
                     {
                         watcher.EnableRaisingEvents = true;
                     }
                 }
-
-                // Reload lại giao diện danh sách
                 ReloadFileList();
             }
             catch (Exception ex)
@@ -445,4 +389,21 @@ namespace MiniDropbox.Client
                 Log("Lỗi lưu file: " + ex.Message);
             }
         }
-}    
+
+        void ToggleButtons(bool connected)
+        {
+            if (InvokeRequired) { Invoke(new Action(() => ToggleButtons(connected))); return; }
+            btnConnect.Enabled = !connected;
+            btnBrowse.Enabled = !connected;
+            btnDisconnect.Enabled = connected;
+            btnSend.Enabled = connected;
+        }
+
+        void Log(string msg)
+        {
+            if (lbLog.InvokeRequired) { lbLog.Invoke(new Action(() => Log(msg))); return; }
+            lbLog.Items.Add($"{DateTime.Now:HH:mm:ss}: {msg}");
+            lbLog.TopIndex = lbLog.Items.Count - 1;
+        }
+    }
+}
