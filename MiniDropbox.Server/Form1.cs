@@ -203,23 +203,7 @@ namespace MiniDropbox.Server
                 // Đọc file
                 byte[] fileData = reader.ReadBytes((int)fileInfo.FileSize);
                 string savePath = Path.Combine(saveFolder, fileInfo.FileName);
-                // Xử lý xung đột
-                bool isConflict = false;
-                if (packet.Command == CommandType.FileCreate && File.Exists(savePath))
-                {
-                    isConflict = true;
 
-                    string fileNameNoExt = Path.GetFileNameWithoutExtension(fileInfo.FileName);
-                    string ext = Path.GetExtension(fileInfo.FileName);
-                    // Dùng Guid hoặc Tick để đảm bảo nếu conflict nhiều lần cũng không trùng nhau
-                    string newFileName = $"{fileNameNoExt} (Conflict) {DateTime.Now.Ticks % 1000}{ext}";
-                    fileInfo.FileName = newFileName;
-                    savePath = Path.Combine(saveFolder, newFileName);
-                    // Gửi thông báo log cho Client
-                    SendConflictNotification(sender, fileInfo.FileName);
-
-                    UpdateLog($"[XUNG ĐỘT] Đã đổi tên file từ {sender.ClientID} thành: {newFileName}");
-                }
                 // Lưu file
                 File.WriteAllBytes(savePath, fileData);
                 UpdateLog($"[NHẬN TỪ {sender.ClientID}] Đã lưu: {fileInfo.FileName} ({FormatSize(fileInfo.FileSize)})");
@@ -232,16 +216,7 @@ namespace MiniDropbox.Server
             }
         }
 
-        private void SendConflictNotification(ClientSocket client, string newName)
-        {
-            try
-            {
-                FileSyncEvent info = new FileSyncEvent { FileName = newName };
-                byte[] packet = PacketUtils.CreatePacket(CommandType.Conflict, info, new byte[0]);
-                client.Socket.Send(packet);
-            }
-            catch { }
-        }
+       
 
         private void BroadcastFile(string filePath, FileSyncEvent fileInfo, ClientSocket sender)
         {

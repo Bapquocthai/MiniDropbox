@@ -7,12 +7,9 @@ namespace MiniDropbox.Shared
     {
         Handshake,     
         FileCreate,     // Tạo file
-        FileUpdate,     // Cập nhật nội dung
+        FileUpdate,     // Cập nhật
         FileDelete,     // Xóa file
-        FileRename,     // Đổi tên file
-        RequestSync,    // Đồng bộ file
-        FileContent,    
-        Conflict       
+        FileRename,     // Đổi tên file   
     }
 
     public class Protocol
